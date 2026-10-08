@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-reader.ss" "lang")((modname Aliens-Attack-V2-V3) (read-case-sensitive #t) (teachpacks ((lib "universe.rkt" "teachpack" "2htdp") (lib "image.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "universe.rkt" "teachpack" "2htdp") (lib "image.rkt" "teachpack" "2htdp")) #f)))
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname Aliens-Attack-V2-V3) (read-case-sensitive #true) (teachpacks ((lib "universe.rkt" "teachpack" "2htdp") (lib "image.rkt" "teachpack" "2htdp"))) (htdp-settings #(#true constructor repeating-decimal #false #true none #false ((lib "universe.rkt" "teachpack" "2htdp") (lib "image.rkt" "teachpack" "2htdp")) #false)))
 (require APS-Aliens-Attack)
 (require 2htdp/image)
 (require 2htdp/universe)
@@ -64,7 +64,7 @@
         [(key=? k " ")
          (make-world (world-rocket w)
                      (world-alien w)
-                     (make-shot (world-rocket w))
+                     (make-shot (world-shot w) (world-rocket w))
                      (world-dir w))]
         [else w]))
 
@@ -96,6 +96,73 @@
                INIT-ALIEN
                INIT-SHOT
                INIT-DIR))
+
+;;alien dir -> alien throws error
+;; Purpose: Move given alien in given direction
+(define (move-alien an-alien a-dir)
+  (cond [(eq? a-dir 'right)
+         (make-posn (move-right-image-x (posn-x an-alien))
+                    (posn-y an-alien))]
+        [(eq? a-dir 'left)
+         (make-posn (move-left-image-x (posn-x an-alien))
+                    (posn-y an-alien))]
+        [else
+         (make-posn (posn-x an-alien)
+                    (move-down-image-y(posn-y an-alien)))]))
+;; Sample expressions for move-alien
+(define MALIEN-VAL1-1
+  (make-posn (move-right-image-x (posn-x INIT-ALIEN))
+             (posn-y INIT-ALIEN)))
+(define INIT-ALIEN2 (make-posn 3 MAX-IMG-Y))
+(define MALIEN-VAL1-2
+(make-posn (move-right-image-x (posn-x INIT-ALIEN2))
+           (posn-y INIT-ALIEN2)))
+(define MALIEN-VAL2-1
+  (make-posn (move-left-image-x (posn-x INIT-ALIEN))
+             (posn-y INIT-ALIEN)))
+(define MALIEN-VAL2-2
+  (make-posn (move-left-image-x (posn-x INIT-ALIEN2))
+             (posn-y INIT-ALIEN2)))
+(define MALIEN-VAL3-1 (make-posn (posn-x INIT-ALIEN)
+                                 (move-down-image-y (posn-y INIT-ALIEN))))
+(define MALIEN-VAL3-2
+  (make-posn (posn-x (make-posn 1 8))
+             (move-down-image-y
+              (posn-y (make-posn 1 8)))))
+;; Tests using sample computations for move-alien
+(check-expect (move-alien INIT-ALIEN 'right) MALIEN-VAL1-1)
+(check-expect (move-alien INIT-ALIEN2 'right) MALIEN-VAL1-2)
+(check-expect (move-alien INIT-ALIEN 'left) MALIEN-VAL2-1)
+(check-expect (move-alien INIT-ALIEN 'left) MALIEN-VAL2-2)
+(check-expect (move-alien INIT-ALIEN 'down) MALIEN-VAL1-1)
+(check-expect (move-alien (make-posn 1 8) 'down)
+              MALIEN-VAL3-2)
+;; Tests using sample values for move-alien
+(check-expect (move-alien (make-posn MAX-IMG-X 3) 'down)
+              (make-posn MAX-IMG-X 4))
+(check-expect (move-alien (make-posn MAX-IMG-X 3) 'left)
+              (make-posn (sub1 MAX-IMG-X) 3))
+(check-expect (move-alien (make-posn 0 5) 'right)
+              (make-posn 1 5))
+(check-error
+ (move-alien INIT-ALIEN2 'down)
+ (format "move-down-image-y: Thecharacter at y=1~s cannot move down."
+         MAX-IMG-Y))
+(check-error
+ (move-alien (make-posn 0 5) 'left)
+ (format "move-left-image-x: The character at x=~s cannotmove left."
+         MIN-IMG-X))
+(check-error
+ (move-alien (make-posn MAX-IMG-X 14) 'right)
+ (format "move-right-image-x: The character at x=~s cannot move right."
+          MAX-IMG-X))
+(check-error
+ (move-alien (make-posn 7 MAX-IMG-Y) 'down)
+ (format "move-down-image-y: The character at y=~s cannot move down."
+         MAX-IMG-Y))
+
+
+
 
 ;; world -> world
 ;; Purpose: Return world after a clock tick by moving
