@@ -1,6 +1,7 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname |aliens attack contribution|) (read-case-sensitive #t) (teachpacks ((lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "universe.rkt" "teachpack" "2htdp")) #f)))
+(require 2htdp/image)
 ;; a slope is a structure with two whole, real number inputs
 (define-struct slope (rise run))
 
@@ -61,3 +62,12 @@
 
 ;represents a fireball that doesn't exist
 (define noFireball 'noFreball)
+
+
+
+(define dragonImg (overlay/offset (circle 5  "solid" "yellow")
+                 -10 0
+                 (overlay/offset (circle 5  "solid" "yellow")
+                 10 0
+               (rectangle 30 30 'solid 'purple) )))
+                   
