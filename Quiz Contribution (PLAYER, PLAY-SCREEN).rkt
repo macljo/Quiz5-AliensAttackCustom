@@ -1,5 +1,6 @@
 #lang htdp/bsl
 (require 2htdp/image)
+(require 2htdp/universe)
 
 (define WIDTH 1265)
 (define HEIGHT 730)
@@ -214,7 +215,26 @@
 (define play6 (place-image life 960 55 play5))
 (define play7 (place-image life 980 55 play6))
 (define play8 (place-image life 1000 55 play7))
-(define play9 (place-image Archer 630 685 play8))
+(define Dragond (place-image Archer 630 685 play8))
+
+(define PLAY-SCREEN 'play9)
+;; A world->image
+(define INIT-WORLD
+        PLAY-SCREEN)
+;; Purpose: To draw the given world
+(define (DRAW-WORLD A-WORLD)
+(cond [(eq? A-WORLD PLAY-SCREEN) Dragond]
+       [else E-SCENE]))
+
+(define PLAYexpr Dragond)
+
+; string → world
+; Purpose: To run the game
+(define (run a-name)
+    (big-bang INIT-WORLD
+              [on-draw DRAW-WORLD]
+              [name a-name]))
+ 
 
 
 
