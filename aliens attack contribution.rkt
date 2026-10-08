@@ -2,6 +2,8 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname |aliens attack contribution|) (read-case-sensitive #t) (teachpacks ((lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "universe.rkt" "teachpack" "2htdp")) #f)))
 (require 2htdp/image)
+(require APS-Aliens-Attack)
+(require 2htdp/universe)
 ;; a slope is a structure with two whole, real number inputs
 (define-struct slope (rise run))
 
@@ -59,6 +61,38 @@
 
 ;a dragon is a structure with a posn, real number, and symbol ('left or 'right)
 (define-struct dragon (posn hp dir))
+
+(define sampDragon1 (make-dragon (make-posn 18 19) 10 'right))
+(define sampDragon2 (make-dragon (make-posn 12 19) 5 'right))
+
+(if (= (+ (posn-y (fireball-posn sampFire1)) 15) (- (posn-y (dragon-posn sampDragon1)) 15 ))
+    #true
+    #false)
+
+(if (= (+ (posn-y (fireball-posn sampFire2)) 15) (- (posn-y (dragon-posn sampDragon2)) 15 ))
+    #true
+    #false)
+
+;;abstract fireball and dragon
+    
+;;purpose return true if the fireball hit the dragon, false otherwise
+;;fireball, dragon -> boolean
+(define (hitDragon? fire dragon)
+  (if (= (+ (posn-y (fireball-posn fire)) 15) (- (posn-y (dragon-posn dragon)) 15 ))
+    #true
+    #false ))
+
+
+
+ ;;samples for lower hp
+(if (hitDragon? sampFire1 sampDragon1) (make-dragon
+                                  (make-posn (posn-x (dragon-posn sampDragon1))
+                                             
+                                            (posn-y (dragon-posn sampDragon1))
+                                             ) (sub1 (dragon-hp sampDragon1)) 'right) sampDragon1)
+
+    
+
 
 ;represents a fireball that doesn't exist
 (define noFireball 'noFreball)
