@@ -217,6 +217,32 @@
 (define play8 (place-image life 1000 55 play7))
 (define Dragond (place-image Archer 630 685 play8))
 
+;; A archer is an image-x
+;; An dragon is a posn: (make-posn image-x image-y)
+;; An dragon-direction is either:
+;;    1. 'right
+;;    2. 'left
+;; A arrow is either:
+;;    1. NO-SHOT
+;;    2. A posn: (make-posn image-x image-y)
+;; A key is either:
+;;    1. "right"
+;;    2. "left"
+;;    3. " "
+;;    4. Not "right", "left", or " "
+;; A world is a structure (make-world archer dragon arrow dragon-direction)
+(define-struct world (archer dragon arrow dir))
+
+;; Sample values
+(define INIT-ARCHER (/ MAX-CHARS-HORIZONTAL 2))
+(define INIT-DRAGON (make-posn (/ MAX-CHARS-HORIZONTAL 2) 0))
+(define INIT-DIR 'right)
+(define INIT-ARROW NO-ARROW)
+(define INIT-WORLD (make-world INIT-ARCHER INIT-DRAGON
+                               INIT-ARROW INIT-DIR))
+
+
+
 (define PLAY-SCREEN 'play9)
 ;; A world->image
 (define INIT-WORLD
