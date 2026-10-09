@@ -1,6 +1,7 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-beginner-reader.ss" "lang")((modname |aliens attack contribution|) (read-case-sensitive #t) (teachpacks ((lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "universe.rkt" "teachpack" "2htdp")) #f)))
+
 (require 2htdp/image)
 (require APS-Aliens-Attack)
 (require 2htdp/universe)
@@ -39,14 +40,14 @@
 
 (define sampMoveFireball1
   (make-fireball
-  (make-slope (fireball-slope sampFire1) (fireball-slope sampFire1))
+  (fireball-slope sampFire1)
   (make-posn  (+ (posn-x (fireball-posn sampFire1)) (slope-run (fireball-slope sampFire1)))
               (+ (posn-y (fireball-posn sampFire1)) (slope-rise (fireball-slope sampFire1))
               ))))
 
 (define sampMoveFireball2
   (make-fireball
-  (make-slope (fireball-slope sampFire2) (fireball-slope sampFire2))
+  (fireball-slope sampFire2)
   (make-posn  (+ (posn-x (fireball-posn sampFire2)) (slope-run (fireball-slope sampFire2)))
               (+ (posn-y (fireball-posn sampFire2)) (slope-rise (fireball-slope sampFire2))
               ))))
@@ -64,10 +65,10 @@
 ;; fireball -> fireball
 (define (moveFireball fire)
   (make-fireball
-  (make-slope (fireball-slope fire))
-  (make-posn  (+ (posn-x (fireball-posn fire)) (slope-run (fireball-slope fire)))
-              (+ (posn-y (fireball-posn fire)) (slope-rise (fireball-slope fire))
-              ))))
+   (fireball-slope fire)
+                            (make-posn  (+ (posn-x (fireball-posn fire)) (slope-run (fireball-slope fire)))
+              (+ (posn-y (fireball-posn fire)) (slope-rise (fireball-slope fire)))
+              )))
 
 
 
@@ -112,7 +113,7 @@
 
 
 
-#CHECK EXPECTS for hitDragon?
+;;#CHECK EXPECTS for hitDragon?
 (check-expect (hitDragon? sampFire1 sampDragon1) #false)
 (check-expect (hitDragon? sampFire2 sampDragon2) #false)
 (check-expect (hitDragon?
